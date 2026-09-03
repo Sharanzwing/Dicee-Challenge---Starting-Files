@@ -1,41 +1,277 @@
-.container {
-  width: 70%;
-  margin: auto;
-  text-align: center;
-}
-
-.dice {
-  text-align: center;
-  display: inline-block;
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background-color: #393E46;
+  min-height: 100vh;
+  background-color: #0f172a;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(78, 204, 163, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.8) 0px, #0b0f19 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  color: #f8fafc;
+  padding: 30px 20px;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header & Typography */
+.header {
+  margin-bottom: 20px;
 }
 
 h1 {
-  margin: 30px;
   font-family: 'Lobster', cursive;
-  text-shadow: 5px 0 #232931;
-  font-size: 8rem;
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #4ECCA3 0%, #38ef7d 60%, #a8ff78 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 20px rgba(78, 204, 163, 0.35));
+  transition: all 0.3s ease;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #94a3b8;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* Score Board */
+.score-board {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 10px 28px;
+  border-radius: 50px;
+  margin-bottom: 35px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.score-item {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.score-item span {
   color: #4ECCA3;
+  font-weight: 800;
+  font-size: 1.15rem;
+  margin-left: 6px;
 }
 
-p {
-  font-size: 2rem;
-  color: #4ECCA3;
-  font-family: 'Indie Flower', cursive;
+.score-divider {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px 10px;
+  border-radius: 12px;
+  letter-spacing: 1px;
 }
 
-img {
-  width: 80%;
+/* Dice Cards Container */
+.dice-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-bottom: 30px;
 }
 
+.dice-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 28px;
+  padding: 30px 36px 36px;
+  width: 240px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dice-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(78, 204, 163, 0.4), transparent);
+}
+
+.dice-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(78, 204, 163, 0.3);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+}
+
+.dice-card.winner {
+  border-color: #4ECCA3;
+  box-shadow: 
+    0 0 40px rgba(78, 204, 163, 0.35),
+    0 25px 50px rgba(0, 0, 0, 0.5);
+  transform: scale(1.05);
+}
+
+.player-name {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 22px;
+  letter-spacing: 0.5px;
+}
+
+.dice-img-box {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dice img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.45));
+  transition: transform 0.3s ease;
+  border-radius: 18px;
+}
+
+/* Shake / Roll Animation */
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(1); }
+  20% { transform: rotate(-25deg) scale(1.1); }
+  40% { transform: rotate(25deg) scale(1.1); }
+  60% { transform: rotate(-15deg) scale(1.05); }
+  80% { transform: rotate(15deg) scale(1.05); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.rolling {
+  animation: diceRoll 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+/* Action Button */
+.action-section {
+  margin-top: 10px;
+}
+
+.roll-btn {
+  background: linear-gradient(135deg, #4ECCA3 0%, #2bb88a 100%);
+  color: #0b1320;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 16px 44px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(78, 204, 163, 0.35);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+}
+
+.roll-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 18px 36px rgba(78, 204, 163, 0.45);
+  background: linear-gradient(135deg, #5debc0 0%, #32c494 100%);
+}
+
+.roll-btn:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 0 6px 16px rgba(78, 204, 163, 0.25);
+}
+
+.roll-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+/* Footer */
 footer {
-  margin-top: 5%;
-  color: #EEEEEE;
-  text-align: center;
-  font-family: 'Indie Flower', cursive;
+  margin-top: 35px;
+  color: #64748b;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  padding-bottom: 10px;
+}
 
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  body {
+    padding: 20px 14px;
+  }
+
+  .dice-wrapper {
+    gap: 20px;
+  }
+
+  .dice-card {
+    width: 155px;
+    padding: 20px 16px;
+    border-radius: 20px;
+  }
+
+  .player-name {
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+  }
+
+  .dice-img-box {
+    width: 105px;
+    height: 105px;
+  }
+
+  .roll-btn {
+    padding: 14px 34px;
+    font-size: 1rem;
+  }
+
+  .score-board {
+    padding: 8px 20px;
+    gap: 14px;
+  }
 }
